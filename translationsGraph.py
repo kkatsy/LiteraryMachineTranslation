@@ -2,7 +2,7 @@ import re
 import networkx as nx
 import matplotlib.pyplot as plt
 
-with open("translations.txt", "r") as f:
+with open("russian_translations.txt", "r") as f:
     translations_list = f.read().split("\n\n")
 
 translator_to_books = {}
@@ -34,12 +34,7 @@ for t in translator_to_books.keys():
         translator_to_num[t] = len(translator_to_books[t])
 
 print(set(translator_to_num.values()))
-# R = 0
-# G = 129
-# for i in range(1,10):
-#     R += 20
-#     G += 10
-#     print(i, ": R = ", R, ", G = ", G)
+
 
 num_to_color = {1: '#B4DBFF', 2: '#A0D1FF', 3: '#8CC7FF', 4: '#78BDFF', 5: '#64B3FF', 6: '#50A9FF', 7: '#3C9FFF',
                 8: '#2895FF', 9: '#148BFF', 10: '#0081FF'}
@@ -71,4 +66,5 @@ nx.draw_networkx(G, font_size='5', node_color=color_map, pos=pos, font_weight='s
                  labels=labels, edge_color='gray')
 plt.show()
 
-print()
+# Print
+print(book_to_translator)
