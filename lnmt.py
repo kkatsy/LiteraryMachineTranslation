@@ -207,7 +207,3 @@ def visualize_alignment_prob(probabilities, sent_tgt, sent_src, alignment, title
         plt.title(title)
 
     plt.show()
-
-
-def bleu_eval():
-    return 0

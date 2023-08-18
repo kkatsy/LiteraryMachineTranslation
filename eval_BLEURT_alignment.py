@@ -1,7 +1,28 @@
+import tensorflow as tf
+import time
+from bleurt import score
 import pickle
-from nltk.translate.bleu_score import sentence_bleu, corpus_bleu
-from statistics import mean
-from lnmt import visualize_alignment, run_awesome_alignment
+from nltk.tokenize import RegexpTokenizer
+tokenizer = RegexpTokenizer(r'\w+')
+
+references = tf.constant(["This is a test.", "This is also the test!", "That is a test."])
+candidates = tf.constant(["This is the test."])
+
+start_time = time.time()
+
+bleurt_ops = score.create_bleurt_ops()
+bleurt_out = bleurt_ops(references=references, candidates=candidates)
+
+end_time = time.time()
+
+total_time = end_time - start_time
+
+assert bleurt_out["predictions"].shape == (1,)
+print(float(bleurt_out["predictions"][0]))
+print("Seconds: ", total_time)
+
+
+######################################################################################
 
 # take 'all src pars from We
 par3_fp = "par3_top.pickle"
@@ -11,14 +32,17 @@ par3 = pickle.load(open(par3_fp, 'rb'))
 we_paras = par3['ru']['we']
 
 include_idx = []
-for i,par in enumerate(we_paras['source_paras']):
+for i, par in enumerate(we_paras['source_paras']):
     if len(par.split()) > 4:
         include_idx.append(i)
 print('Original num paras: ', len(we_paras['source_paras']))
 print('>4 words num paras: ', len(include_idx))
 
 # for each instance: get corpus BLEU of machine + human translations
-index_to_bleu = {} # index to average bleu
+
+index_to_bleu = {} # index, sent_num to average bleu
+index_to_translations = {}
+average_len = 0
 for i in include_idx:
     gt_translation = we_paras['gt_paras'][i]
     human_translations = []
@@ -26,39 +50,35 @@ for i in include_idx:
         translation = we_paras['translator_data'][translator]['translator_paras'][i]
         human_translations.append(translation)
 
-    bleus = []
-    for h in human_translations:
-        reference = gt_translation
-        hypothesis = h
-        bleus.append(corpus_bleu([reference], [hypothesis], weights = [1]))
+    references = [h for h in human_translations]
+    hypothesis = [gt_translation]
+    bleurt_ops = score.create_bleurt_ops()
+    bleurt_out = bleurt_ops(references=tf.constant(references), candidates=tf.constant(hypothesis))
+    bleu = float(bleurt_out["predictions"][0])
 
-    average_bleu = mean(bleus)
-    index_to_bleu[i] = average_bleu
+    # bleus = []
+    # for r in references:
+    #     bleurt_out = bleurt_ops(references=tf.constant([r]), candidates=tf.constant(hypothesis))
+    #     a_bleu = float(bleurt_out["predictions"][0])
+    #     bleus.append(a_bleu)
 
-max_bleu_idx = max(index_to_bleu, key=index_to_bleu.get)
-min_bleu_idx = min(index_to_bleu, key=index_to_bleu.get)
-print('min bleu: ', index_to_bleu[min_bleu_idx], ' , min index: ', min_bleu_idx )
-print('min bleu length: ', len(we_paras['gt_paras'][min_bleu_idx]))
-
-print('max bleu: ', index_to_bleu[max_bleu_idx], ' , max index: ', max_bleu_idx )
-print('max bleu length: ', len(we_paras['gt_paras'][max_bleu_idx]))
-# bleus clues: identifying non-compositional language via bleu and word alignment
-
-top_3_bleu = sorted(index_to_bleu, key=index_to_bleu.get, reverse=True)[:3]
-bottom_3_bleu = sorted(index_to_bleu, key=index_to_bleu.get, reverse=False)[:3]
+    index_to_bleu[i] = bleu
+    index_to_translations[i] = {'gt': gt_translation, 'hum': human_translations}
 
 
-# for each instance: get sentence BLEU of machine + human translations
+bottom_bleu = sorted(index_to_bleu, key=index_to_bleu.get, reverse=False)[:10]
+top_bleu = sorted(index_to_bleu, key=index_to_bleu.get, reverse=True)[:10]
 
-# for each instance: get BLEURT of machine + human translations
+print('BOTTOM')
+for b in bottom_bleu:# + bottom_bleu:
+    print('BLEURT: ', index_to_bleu[b])
+    print('Sentence: ', we_paras['source_paras'][b])
+    print('Translations: ', index_to_translations[b])
+    print()
 
-# look at word alignments of best + worst cases
-worst_src = None
-worst_tgt = None
-align_words_worst, srctgt_prob_worst, tgtsrc_prob_worst = run_awesome_alignment(worst_src, worst_tgt)
-visualize_alignment(align_words_worst, worst_src, worst_tgt)
-
-best_src = None
-best_tgt = None
-align_words_best, srctgt_prob_best, tgtsrc_prob_best = run_awesome_alignment(best_src, best_tgt)
-visualize_alignment(align_words_best, best_src, best_tgt)
+print('TOP')
+for b in top_bleu:# + bottom_bleu:
+    print('BLEURT: ', index_to_bleu[b])
+    print('Sentence: ', we_paras['source_paras'][b])
+    print('Translations: ', index_to_translations[b])
+    print()
