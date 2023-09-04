@@ -3,26 +3,9 @@ import time
 from bleurt import score
 import pickle
 from nltk.tokenize import RegexpTokenizer
+
 tokenizer = RegexpTokenizer(r'\w+')
-
-references = tf.constant(["This is a test.", "This is also the test!", "That is a test."])
-candidates = tf.constant(["This is the test."])
-
-start_time = time.time()
-
 bleurt_ops = score.create_bleurt_ops()
-bleurt_out = bleurt_ops(references=references, candidates=candidates)
-
-end_time = time.time()
-
-total_time = end_time - start_time
-
-assert bleurt_out["predictions"].shape == (1,)
-print(float(bleurt_out["predictions"][0]))
-print("Seconds: ", total_time)
-
-
-######################################################################################
 
 # take 'all src pars from We
 par3_fp = "par3_top.pickle"

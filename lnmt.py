@@ -139,14 +139,38 @@ def visualize_alignment(source_sentence, tgt_sentence, alignment):
 
 def visualize_translations_graph(translator_to_books, book_to_translator, min_translations=3, min_translators=3, title=None):
     # remove translators with less than X translations
-    translator_to_num = {}
+    remove_translators = []
     for t in translator_to_books.keys():
         if len(translator_to_books[t]) < min_translations:
             books = translator_to_books[t]
             for b in books:
                 book_to_translator[b].remove(t)
-        else:
-            translator_to_num[t] = len(translator_to_books[t])
+            remove_translators.append(t)
+
+    for r in remove_translators:
+        translator_to_books.pop(r)
+
+    # remove books with less than X translators
+    curr_books = list(book_to_translator.keys())
+    delete_books = []
+    for book in curr_books:
+        if len(book_to_translator[book]) < min_translators:
+            book_to_translator.pop(book)
+            delete_books.append(book)
+
+    for d in delete_books:
+        for t in translator_to_books.keys():
+            if d in translator_to_books[t]:
+                translator_to_books[t].remove(d)
+
+    # remove translators with less than X translations
+    curr_translators = list(translator_to_books.keys())
+    for t in curr_translators:
+        if len(translator_to_books[t]) < min_translations:
+            translator_to_books.pop(t)
+            for b in book_to_translator.keys():
+                if t in book_to_translator[b]:
+                    book_to_translator[b].remove(t)
 
     num_to_color = {1: '#B4DBFF', 2: '#A0D1FF', 3: '#8CC7FF', 4: '#78BDFF', 5: '#64B3FF', 6: '#50A9FF', 7: '#3C9FFF',
                     8: '#2895FF', 9: '#148BFF', 10: '#0081FF'}
@@ -185,6 +209,55 @@ def visualize_translations_graph(translator_to_books, book_to_translator, min_tr
         plt.title(title)
 
     plt.show()
+
+    # pruned book to translators dictionary
+    return book_to_translator
+
+
+def visualize_translations_heatmap(translator_to_books, book_to_translator, min_translations=3, min_translators=3, title=None):
+    # remove translators with less than X translations
+    remove_translators = []
+    for t in translator_to_books.keys():
+        if len(translator_to_books[t]) < min_translations:
+            books = translator_to_books[t]
+            for b in books:
+                book_to_translator[b].remove(t)
+            remove_translators.append(t)
+
+    for r in remove_translators:
+        translator_to_books.pop(r)
+
+    # remove books with less than X translators
+    curr_books = list(book_to_translator.keys())
+    delete_books = []
+    for book in curr_books:
+        if len(book_to_translator[book]) < min_translators:
+            book_to_translator.pop(book)
+            delete_books.append(book)
+
+    for d in delete_books:
+        for t in translator_to_books.keys():
+            if d in translator_to_books[t]:
+                translator_to_books[t].remove(d)
+
+    # remove translators with less than X translations
+    curr_translators = list(translator_to_books.keys())
+    for t in curr_translators:
+        if len(translator_to_books[t]) < min_translations:
+            translator_to_books.pop(t)
+            for b in book_to_translator.keys():
+                if t in book_to_translator[b]:
+                    book_to_translator[b].remove(t)
+
+    one_hot_matrix = []
+    for translator in translator_to_books.keys():
+        row = []
+        for book in book_to_translator.keys():
+            if book in translator_to_books[translator]:
+                row.append(1)
+            else:
+                row.append(0)
+        one_hot_matrix.append(row)
 
     # pruned book to translators dictionary
     return book_to_translator
