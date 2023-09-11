@@ -1,4 +1,4 @@
-We
+We, Yevgeny Zamyatin
 1) Gregory Zilboorg - 1924
 2) Bernard Guilbert Guerney - 1960
 3) Mirra Ginsburg - 1999
@@ -8,7 +8,7 @@ We
 7) Nadja Boltyanskaya - 2020
 8) Bela Shayevich - 2021
 
-Dead Souls
+Dead Souls, Nikolai Gogol
 1) Isabel Hapgood - 1886
 2) C. J. Hogarth - 1916
 3) Constance Garnett - 1922
@@ -21,7 +21,7 @@ Dead Souls
 10) Robert A. Maguire - 2004
 11) Donald Rayfield - 2008
 
-The Idiot
+The Idiot, Fyodor Dostoevsky
 1) Fredrick Whishaw - 1887
 2) Constance Garnett - 1913
 3) Eva Martin - 1915 (text)
@@ -33,7 +33,7 @@ The Idiot
 9) David McDuff - 2004
 10) Ignat Avsey - 2010
 
-Crime and Punishment
+Crime and Punishment, Fyodor Dostoevsky
 1) Frederick Wishaw - 1885
 2) Constance Garnett - 1914
 3) David Magarshack - 1951
@@ -49,7 +49,7 @@ Crime and Punishment
 13) Michael R. Katz - 2018
 14) Roger Cockrell - 2022
 
-Fathers And Sons
+Fathers And Sons, Ivan Turgenev
 1) Eugene Schuyler - 1867
 2) Constance Garnett - 1896
 3) Isabel F. Hapgood - 1903
@@ -65,7 +65,7 @@ Fathers And Sons
 13) Michael R. Katz - 1994
 14) Peter Carson - 2009
 
-Notes From Underground
+Notes From Underground, Fyodor Dostoevsky
 1) C. J. Hogarth - 1913
 2) Constance Garnett - 1918
 3) David Magarshack - 1955
@@ -81,7 +81,7 @@ Notes From Underground
 13) Zinovieff and Hughes - 2010
 14) Kirsten Lodge - 2014
 
-Poor Folk
+Poor Folk, Fyodor Dostoevsky
 1) Lena Milman - 1894
 2) Thomas Seltzer - 1900
 3) C. J. Hogarth - 1915
@@ -92,7 +92,7 @@ Poor Folk
 8) David McDuff - 1989
 9) Hugh Aplin - 2002
 
-The Death Of Ivan Ilyich
+The Death Of Ivan Ilyich, Lev Tolstoy
 1) Aylmer and Louise Maude - 1886
 2) Constance Garnett - 1902
 3) Rosemary Edmonds - 1960
@@ -100,7 +100,7 @@ The Death Of Ivan Ilyich
 5) Ian Dreiblatt - 2008
 6) Pavear and Volokhonsky - 2009
 
-War and Peace
+War and Peace, Lev Tolstoy
 1) Clara Bell - 1886
 2) Nathan Haskell Dole - 1889
 3) Leo Wiener - 1904
@@ -113,7 +113,7 @@ War and Peace
 10) Pevear and Volokhonsky - 2007
 11) Maude + Amy Mandelkar - 2010
 
-Anna Karenina
+Anna Karenina, Lev Tolstoy
 1) Nathan Haskell Dole - 1887
 2) Constance Garnett - 1901
 3) Leo Wiener - 1904
@@ -130,7 +130,7 @@ Anna Karenina
 14) Rosamund Bartlett - 2014
 15) Marin Schwartz - 2015
 
-Master and Margarita
+Master and Margarita, Mikhail Bulgakov
 1) Mirra Ginsburg - 1967
 2) Michael Glenny - 1967
 3) Burgin and O'Connor - 1993
@@ -138,7 +138,7 @@ Master and Margarita
 5) Michael Karpelson - 2006
 6) Hugh Aplin - 2008
 
-Demons
+Demons, Fyodor Dostoevsky
 1) Constance Garnett - 1914
 2) David Magarshack -  1953
 3) Andrew R. MacAndrew - 1962
@@ -147,7 +147,7 @@ Demons
 6) Robert A. Maguire - 2008
 7) Roger Cockrell - 2017
 
-A Hero of Our Time
+A Hero of Our Time, Mikhail Lermontov
 1) J. H. Wisdom and Murray - 1916
 2) Reginald Merton - 1928
 3) Eden and Cedar Paul - 1940
@@ -159,18 +159,18 @@ A Hero of Our Time
 9) Alexander Vassiliev - 2010
 10) Nicolas Pasternak Slater - 2013
 
-Petersburg
+Petersburg, Fyodor Dostoevsky
 1) John Cournos - 1959
 2) Robert A. Maguire - 1978
 3) David McDuff - 1995
 4) John Elsworth - 2009
 
-Doctor Zhivago
+Doctor Zhivago, Boris Pasternak
 1) Hayward and Harari - 1958
 2) Pevear and Volokhonsky - 2010
 3) Nicolas Pasternak Slater - 2019
 
-The Brothers Karamazov
+The Brothers Karamazov, Fyodor Dostoevsky
 1) Constance Garnett - 1912
 2) David Magarshack - 1958
 3) Julius Katzer - 1981

@@ -137,49 +137,52 @@ def visualize_alignment(source_sentence, tgt_sentence, alignment):
     plt.show()
 
 
-def visualize_translations_graph(translator_to_books, book_to_translator, min_translations=3, min_translators=3, title=None):
-    # remove translators with less than X translations
-    remove_translators = []
-    for t in translator_to_books.keys():
-        if len(translator_to_books[t]) < min_translations:
-            books = translator_to_books[t]
-            for b in books:
-                book_to_translator[b].remove(t)
-            remove_translators.append(t)
+def visualize_translations_graph(translator_to_books, book_to_translator, min_translations=3, min_translators=3,
+                                 title=None):
+    if min_translators > 0 or min_translations > 0:
 
-    for r in remove_translators:
-        translator_to_books.pop(r)
-
-    # remove books with less than X translators
-    curr_books = list(book_to_translator.keys())
-    delete_books = []
-    for book in curr_books:
-        if len(book_to_translator[book]) < min_translators:
-            book_to_translator.pop(book)
-            delete_books.append(book)
-
-    for d in delete_books:
+        # remove translators with less than X translations
+        remove_translators = []
         for t in translator_to_books.keys():
-            if d in translator_to_books[t]:
-                translator_to_books[t].remove(d)
-
-    # remove translators with less than X translations
-    curr_translators = list(translator_to_books.keys())
-    for t in curr_translators:
-        if len(translator_to_books[t]) < min_translations:
-            translator_to_books.pop(t)
-            for b in book_to_translator.keys():
-                if t in book_to_translator[b]:
+            if len(translator_to_books[t]) < min_translations:
+                books = translator_to_books[t]
+                for b in books:
                     book_to_translator[b].remove(t)
+                remove_translators.append(t)
+
+        for r in remove_translators:
+            translator_to_books.pop(r)
+
+        # remove books with less than X translators
+        curr_books = list(book_to_translator.keys())
+        delete_books = []
+        for book in curr_books:
+            if len(book_to_translator[book]) < min_translators:
+                book_to_translator.pop(book)
+                delete_books.append(book)
+
+        for d in delete_books:
+            for t in translator_to_books.keys():
+                if d in translator_to_books[t]:
+                    translator_to_books[t].remove(d)
+
+        # remove translators with less than X translations
+        curr_translators = list(translator_to_books.keys())
+        for t in curr_translators:
+            if len(translator_to_books[t]) < min_translations:
+                translator_to_books.pop(t)
+                for b in book_to_translator.keys():
+                    if t in book_to_translator[b]:
+                        book_to_translator[b].remove(t)
+
+        # remove books with less than X translators
+        curr_books = list(book_to_translator.keys())
+        for book in curr_books:
+            if len(book_to_translator[book]) < min_translators:
+                book_to_translator.pop(book)
 
     num_to_color = {1: '#B4DBFF', 2: '#A0D1FF', 3: '#8CC7FF', 4: '#78BDFF', 5: '#64B3FF', 6: '#50A9FF', 7: '#3C9FFF',
                     8: '#2895FF', 9: '#148BFF', 10: '#0081FF'}
-
-    # remove books with less than X translators
-    curr_books = list(book_to_translator.keys())
-    for book in curr_books:
-        if len(book_to_translator[book]) < min_translators:
-            book_to_translator.pop(book)
 
     G = nx.Graph(book_to_translator)
 
@@ -214,63 +217,91 @@ def visualize_translations_graph(translator_to_books, book_to_translator, min_tr
     return book_to_translator
 
 
-def visualize_translations_heatmap(translator_to_books, book_to_translator, min_translations=3, min_translators=3, title=None):
-    # remove translators with less than X translations
-    remove_translators = []
-    for t in translator_to_books.keys():
-        if len(translator_to_books[t]) < min_translations:
-            books = translator_to_books[t]
-            for b in books:
-                book_to_translator[b].remove(t)
-            remove_translators.append(t)
+def visualize_translations_heatmap(translator_to_books, book_to_translator, author_to_books, min_translations=3,
+                                   min_translators=3, title=None):
+    if min_translators > 0 or min_translations > 0:
 
-    for r in remove_translators:
-        translator_to_books.pop(r)
-
-    # remove books with less than X translators
-    curr_books = list(book_to_translator.keys())
-    delete_books = []
-    for book in curr_books:
-        if len(book_to_translator[book]) < min_translators:
-            book_to_translator.pop(book)
-            delete_books.append(book)
-
-    for d in delete_books:
+        # remove translators with less than X translations
+        remove_translators = []
         for t in translator_to_books.keys():
-            if d in translator_to_books[t]:
-                translator_to_books[t].remove(d)
-
-    # remove translators with less than X translations
-    curr_translators = list(translator_to_books.keys())
-    for t in curr_translators:
-        if len(translator_to_books[t]) < min_translations:
-            translator_to_books.pop(t)
-            for b in book_to_translator.keys():
-                if t in book_to_translator[b]:
+            if len(translator_to_books[t]) < min_translations:
+                books = translator_to_books[t]
+                for b in books:
                     book_to_translator[b].remove(t)
+                remove_translators.append(t)
 
-    one_hot_matrix = []
-    for translator in translator_to_books.keys():
-        row = []
-        for book in book_to_translator.keys():
-            if book in translator_to_books[translator]:
-                row.append(1)
-            else:
-                row.append(0)
-        one_hot_matrix.append(row)
+        for r in remove_translators:
+            translator_to_books.pop(r)
+
+        # remove books with less than X translators
+        curr_books = list(book_to_translator.keys())
+        delete_books = []
+        for book in curr_books:
+            if len(book_to_translator[book]) < min_translators:
+                book_to_translator.pop(book)
+                delete_books.append(book)
+
+        for d in delete_books:
+            for t in translator_to_books.keys():
+                if d in translator_to_books[t]:
+                    translator_to_books[t].remove(d)
+
+        # remove translators with less than X translations
+        curr_translators = list(translator_to_books.keys())
+        for t in curr_translators:
+            if len(translator_to_books[t]) < min_translations:
+                translator_to_books.pop(t)
+                for b in book_to_translator.keys():
+                    if t in book_to_translator[b]:
+                        book_to_translator[b].remove(t)
+
+    # get all authors in set
+    book_to_author = {}
+    authors = []
+    for b in book_to_translator.keys():
+        for a in author_to_books.keys():
+            if b in author_to_books[a]:
+                book_to_author[b] = a
+                if a not in authors:
+                    authors.append(a)
+                break
+
+    # create matrix: translators to authors
+    translation_counts = []
+    translators = list(translator_to_books.keys())
+    for t in translators:
+        translator_to_author_counts = []
+        for a in authors:
+            authors_books = author_to_books[a]
+            translators_books = translator_to_books[t]
+            intersection = list(set(authors_books) & set(translators_books))
+            num_translations_of_author = len(intersection)
+            translator_to_author_counts.append(num_translations_of_author)
+        translation_counts.append(translator_to_author_counts)
+
+    f, ax = plt.subplots(figsize=(10, 6))
+    ax = sns.heatmap(translation_counts, cmap="crest", xticklabels=authors, yticklabels=translators, annot=True,
+                     linewidths=.5, ax=ax)
+    plt.yticks(rotation=0)
+
+    if title:
+        plt.title(title)
+
+    plt.tight_layout()
+    plt.show()
 
     # pruned book to translators dictionary
     return book_to_translator
 
 
 def visualize_alignment_prob(probabilities, sent_tgt, sent_src, alignment, title=None):
-
-    # rectangles to highlight alignment
+    # heatmap of probabilities
     f, ax = plt.subplots(figsize=(9, 6))
     ax = sns.heatmap(probabilities, cmap="crest", xticklabels=sent_tgt, yticklabels=sent_src, annot=True, linewidths=.5,
                      ax=ax)
     plt.yticks(rotation=0)
 
+    # rectangles to highlight alignment
     for align in alignment:
         x = align[0]
         y = align[1]
@@ -280,3 +311,16 @@ def visualize_alignment_prob(probabilities, sent_tgt, sent_src, alignment, title
         plt.title(title)
 
     plt.show()
+
+
+def get_bleu():
+    return 0
+
+
+def get_bleurt():
+    return 0
+
+
+def bleu_vs_bleurt():
+    return 0
+
