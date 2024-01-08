@@ -6,14 +6,16 @@ import torch
 from matplotlib.patches import Rectangle
 import seaborn as sns
 
-DEFAULT_MODEL = AutoModel.from_pretrained("aneuraz/awesome-align-with-co")
-DEFAULT_TOKENIZER = AutoTokenizer.from_pretrained("aneuraz/awesome-align-with-co")
 
-
-def run_awesome_alignment(src, tgt, model=DEFAULT_MODEL, tokenizer=DEFAULT_TOKENIZER):
+def run_awesome_alignment(src, tgt, model=None, tokenizer=None):
     # model parameters
     align_layer = 8
     threshold = 1e-2
+
+    if model is None:
+        model = AutoModel.from_pretrained("aneuraz/awesome-align-with-co")
+    if tokenizer is None:
+        tokenizer = AutoTokenizer.from_pretrained("aneuraz/awesome-align-with-co")
 
     # pre-processing
     sent_src, sent_tgt = src.strip().split(), tgt.strip().split()

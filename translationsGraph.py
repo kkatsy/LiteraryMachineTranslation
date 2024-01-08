@@ -1,7 +1,9 @@
 import re
 from lnmt import visualize_translations_graph, visualize_translations_heatmap
 
-with open("russian_translations.txt", "r") as f:
+EXCLUDE_TRANSLATOR = ["David Magarshack"]
+
+with open("ru_books_dataset.txt", "r") as f:
     translations_list = f.read().split("\n\n")
 
 translator_to_books = {}
@@ -12,6 +14,7 @@ for book_info in translations_list:
     info = book_info.split('\n')
 
     title, author = info[0].split(', ')
+
     author_to_translators[author] = []
     book_to_translator[title] = []
 
@@ -22,19 +25,22 @@ for book_info in translations_list:
     translators_list = info[1:]
 
     for a in translators_list:
-        translator = re.search(r"\)(.*) -", a).group(1)
+        translator = re.search(r"\)(.*) -", a).group(1).strip()
 
-        author_to_translators[author].append(translator)
+        if translator not in EXCLUDE_TRANSLATOR:
+            author_to_translators[author].append(translator)
 
-        book_to_translator[title].append(translator)
+            book_to_translator[title].append(translator)
 
-        if translator not in translator_to_books.keys():
-            translator_to_books[translator] = []
-        translator_to_books[translator].append(title)
+            if translator not in translator_to_books.keys():
+                translator_to_books[translator] = []
+            translator_to_books[translator].append(title)
+        else:
+            print()
 
 # visualization params
-min_translators_per_book = 3
-min_translations_per_translator = 4
+min_translators_per_book = 0
+min_translations_per_translator = 0
 plot_title = str(min_translators_per_book) + " or more translators per book, " + str(
     min_translations_per_translator) + " or more translations per translator"
 

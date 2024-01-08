@@ -2,38 +2,40 @@ import tensorflow as tf
 import time
 from bleurt import score
 import pickle
-from scipy.stats import pearsonr
 import sklearn
 import numpy as np
 import matplotlib.pyplot as plt
 from sacrebleu import corpus_bleu, BLEU
 from nltk.tokenize import RegexpTokenizer
 from statistics import mean, stdev
+from tqdm import tqdm
 
+BOOK = 'the_idiot'
 
 par3_fp = "par3_top.pickle"
 par3 = pickle.load(open(par3_fp, 'rb'))
 
 # pre-process
-we_paras = par3['ru']['we']
+book_paras = par3['ru'][BOOK]
 
 include_idx = []
-for i, par in enumerate(we_paras['source_paras']):
+for i, par in enumerate(book_paras['source_paras']):
     if len(par.split()) > 4:
         include_idx.append(i)
-print('Original num paras: ', len(we_paras['source_paras']))
+print('Original num paras: ', len(book_paras['source_paras']))
 print('>4 words num paras: ', len(include_idx))
 
 # for each instance: get corpus BLEU of machine + human translations
 index_to_score = {} # index, sent_num to average bleu
 index_to_translations = {}
 dropped = 0
-for i in include_idx:
-    gt_translation = we_paras['gt_paras'][i]
+for i in tqdm(include_idx):
+
+    gt_translation = book_paras['gt_paras'][i]
     human_translations = {}
     lengths = []
-    for j, translator in enumerate(we_paras['translator_data'].keys()):
-        translation = we_paras['translator_data'][translator]['translator_paras'][i]
+    for j, translator in enumerate(book_paras['translator_data'].keys()):
+        translation = book_paras['translator_data'][translator]['translator_paras'][i]
         human_translations['hum'+str(j+1)] = translation
         lengths.append(len(translation))
 
@@ -78,5 +80,10 @@ for i in include_idx:
     gt = {'gt': gt_translation}
     index_to_translations[i] = {**gt, **human_translations}
 
-# bottom_bleu = sorted(index_to_bleu, key=index_to_bleu.get, reverse=False)[:10]
-# top_bleu = sorted(index_to_bleu, key=index_to_bleu.get, reverse=True)[:10]
+
+with open('book_scores/' + BOOK + '_scores.pickle', 'wb') as handle:
+    pickle.dump(index_to_score, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+with open('book_scores/' + BOOK + '_translations.pickle', 'wb') as handle:
+    pickle.dump(index_to_translations, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
