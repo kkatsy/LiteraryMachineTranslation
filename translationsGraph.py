@@ -1,7 +1,8 @@
 import re
 from lnmt import visualize_translations_graph, visualize_translations_heatmap
 
-EXCLUDE_TRANSLATOR = ["David Magarshack"]
+# EXCLUDE_TRANSLATOR = ["David Magarshack"]
+EXCLUDE_TRANSLATOR = []
 
 with open("ru_books_dataset.txt", "r") as f:
     translations_list = f.read().split("\n\n")

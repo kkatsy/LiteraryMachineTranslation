@@ -1,11 +1,10 @@
 import re
-text = "boop boop\n1 beep int. bop badoop\n4 il\nhello"
-text = text.replace('Boop', 'goop')
+text = "noth ing inglourious blaring"
 print(text)
-new_text = re.sub(r"\n[0-9] .*]","", text)
-
+# new_text = re.sub(r"\n[0-9] .*]","", text)
+new_text = re.sub("( ing )", 'ing ', text)
 text2 = "\' T"
-re.sub(r'(?is)</html>.+', '</html>', article)
+# re.sub(r'(?is)</html>.+', '</html>', article)
 print(new_text)
 
 ##################################################
